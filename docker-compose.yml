@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  amqp-samples:
+    build: .
+    env_file:
+      - env
+    # network_mode: host
+    volumes:
+      - ./_service_storage:/app/_service_storage
