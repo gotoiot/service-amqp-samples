@@ -6,7 +6,7 @@ import sys
 
 # check if user request help
 if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
-    print(f"Usage direct exchange consumer: python consumer.py [exchange_name] [routing_key]")
+    print(f"Usage fanout exchange consumer: python consumer.py [exchange_name]")
     sys.exit(0)
 
 
@@ -30,16 +30,15 @@ def main():
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     # application settings
-    exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.direct"
-    routing_key = sys.argv[2] if len(sys.argv) > 2 else "event"
+    exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.fanout"
     # starting to consume from queue
-    channel.exchange_declare(exchange=exchange_name, exchange_type='direct')
+    channel.exchange_declare(exchange=exchange_name, exchange_type='fanout')
     queue = channel.queue_declare(queue='', exclusive=True)
     queue_name = queue.method.queue
-    channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_key)
-    print(f"Binding exchange '{exchange_name}' to queue '{queue_name}' with routing key '{routing_key}'")
+    channel.queue_bind(exchange=exchange_name, queue=queue_name)
+    print(f"Binding exchange '{exchange_name}' to queue '{queue_name}'")
     channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-    print(f"Starting to consume from '{queue_name}' with '{routing_key}' routing_key...To exit press CTRL+C")
+    print(f"Starting to consume from '{queue_name}'...To exit press CTRL+C")
     channel.start_consuming()
 
 
