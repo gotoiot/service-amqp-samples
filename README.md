@@ -2,18 +2,17 @@
     <img src="_doc/gotoiot-logo.png" alt="logo" title="Goto IoT" align="right" width="60" height="60" />
 </a>
 
-Service Worker IoT Core
-=======================
+Service AMQP Samples
+====================
 
 *Ayudaría mucho si apoyaras este proyecto con una ⭐ en Github!*
 
-Este proyecto es el worker de la plataforma [Edge IoT Core]() que procesa de manera asincrónica eventos y comandos que provienen de una cola. Utiliza una comunicación con un broker RabbitMQ para obtener de una cola los eventos y comandos a procesar, los ejecuta de manera asincrónica y segura a medida que tiene disponibilidad, y termina impactando los datos en una base de datos o bien realizando una comunicación con distintos servicios.
+Este proyecto contiene distintos ejemplos para conectarse a un broker RabbitMQ - basado en el protocolo AMQP 0-9-1 - usando distintos ejemplos en lenguaje Python.
 
-Es capaz de crear las tablas de la base de datos que necesita para correr, y también es capaz de comunicarse con la base de datos y el broker RabbitMQ tomando las configuraciones de variables de entorno, así como también del archivo de configuración general del servicio.
+> Para que este servicio funcione deberías contar con un broker RabbitMQ corriendo previo a la ejecución del servicio. Si no sabés como hacerlo, el proyecto [Service AMQP Broker](https://github.com/gotoiot/service-amqp-broker) de nuestra organización de Github tiene toda la información necesaria para correrlo dentro del ecosistema Docker.
+ 
+> Para que entiendas el alcance de este proyecto, es recomendable que leas la [Introducción a AMQP](https://www.gotoiot.com/pages/articles/amqp_intro/index.html) y la [Introducción a RabbitMQ](https://www.gotoiot.com/pages/articles/rabbitmq_intro/index.html) que se encuentran publicadas en nuestra web.
 
-Debido a que utiliza una cola - que se utiliza de buffer - para porcesar los eventos y comandos, y además realiza un ACK de cada dato tomado de la cola, puede realizar las transacciones de manera segura, garantizando que no se pierda ningun dato.
-
-> Para que este servicio funcione deberías contar con un broker RabbitMQ corriendo previo a la ejecución del servicio.
 
 > Si bien este proyecto está adaptado a funcionar con el proyecto Edge IoT Core, que involucra toda una serie de servicios de Goto IoT, es perfectamente adaptable a la comunicación con otros sistemas,lo que lo convierte en una pieza fundamental de trabajo y comunicación entre procesos de manera desacoplada.
 
@@ -33,38 +32,65 @@ Continua con la descarga del código cuando tengas las dependencias instaladas y
 
 ## Descargar el código 💾
 
-Para descargar el código, lo más conveniente es que realices un `fork` de este proyecto a tu cuenta personal haciendo click en [este link](https://github.com/gotoiot/service-worker-iot-core/fork). Una vez que ya tengas el fork a tu cuenta, descargalo con este comando (acordate de poner tu usuario en el link):
+Para descargar el código, lo más conveniente es que realices un `fork` de este proyecto a tu cuenta personal haciendo click en [este link](https://github.com/gotoiot/service-amqp-samples/fork). Una vez que ya tengas el fork a tu cuenta, descargalo con este comando (acordate de poner tu usuario en el link):
 
 ```
-git clone https://github.com/USER/service-worker-iot-core.git
+git clone https://github.com/USER/service-amqp-samples.git
 ```
 
 > En caso que no tengas una cuenta en Github podes clonar directamente este repo.
 
 ## Ejecutar la aplicación 🚀
 
-Cuando tengas el código descargado, desde una terminal en la raíz del proyecto ejecuta el comando `docker-compose build worker-iot-core` que se va encargar de compilar la imagen del scanner en tu máquina (este proceso puede durar unos minutos dependiento tu conexión a internet). 
+Cuando tengas el código descargado, desde una terminal en la raíz del proyecto ejecuta el comando `docker-compose build amqp-samples` que se va encargar de compilar la imagen con los ejemplos en tu máquina (este proceso puede durar unos minutos dependiento tu conexión a internet). 
 
-Si estás trabajando de manera local - aislado de los demás servicios - podés crear una base de datos de prueba para testear el funcionamiento. Para ello ejecutá el comando `docker-compose run worker-iot-core python bin/create_db.py`.
-
-Una vez que haya compilado activa, ejecutá el servicio de RabbitMQ antes de correr este servicio; para ello ejecuta el comando `docker-compose up -d rabbitmq`. Luego de unos segundos - cuando ya esté corriendo el servicio de RabbitMQ - ejecutá el comando `docker-compose up worker-iot-core` para poner en funcionamiento el servicio. En la terminal (entre un log inicial y las configuraciones) deberías ver una salida similar a la siguiente:
+Una vez que haya compilado, ejecuta el comando `docker-compose up` que va a correr el comando por defecto del servicio y te va a mostrar una lista con las muestras disponibles para que ejecutes. Deberías ver una salida similar a la siguiente:
 
 ```
-...
-...
-      /$$$$$$            /$$                    /$$$$$$      /$$$$$$$$
-     /$$__  $$          | $$                   |_  $$_/     |__  $$__/
-    | $$  \__/ /$$$$$$ /$$$$$$   /$$$$$$         | $$   /$$$$$$| $$   
-    | $$ /$$$$/$$__  $|_  $$_/  /$$__  $$        | $$  /$$__  $| $$   
-    | $$|_  $| $$  \ $$ | $$   | $$  \ $$        | $$ | $$  \ $| $$   
-    | $$  \ $| $$  | $$ | $$ /$| $$  | $$        | $$ | $$  | $| $$   
-    |  $$$$$$|  $$$$$$/ |  $$$$|  $$$$$$/       /$$$$$|  $$$$$$| $$   
-     \______/ \______/   \___/  \______/       |______/\______/|__/   
+Starting to run Service AMQP Samples
 
-                      SERVICE WORKER IOT CORE
-                      -----------------------
-...
-...
+          /$$$$$$            /$$                    /$$$$$$      /$$$$$$$$
+         /$$__  $$          | $$                   |_  $$_/     |__  $$__/
+        | $$  \__/ /$$$$$$ /$$$$$$   /$$$$$$         | $$   /$$$$$$| $$   
+        | $$ /$$$$/$$__  $|_  $$_/  /$$__  $$        | $$  /$$__  $| $$   
+        | $$|_  $| $$  \ $$ | $$   | $$  \ $$        | $$ | $$  \ $| $$   
+        | $$  \ $| $$  | $$ | $$ /$| $$  | $$        | $$ | $$  | $| $$   
+        |  $$$$$$|  $$$$$$/ |  $$$$|  $$$$$$/       /$$$$$|  $$$$$$| $$   
+         \______/ \______/   \___/  \______/       |______/\______/|__/   
+
+                            SERVICE AMQP SAMPLES
+                            --------------------
+
+################################################################################
+
+    In this repo there are many samples to connect to RabbitMQ broker.
+    Each sample includes help message invoking it with -h flag.
+
+    Default exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/default_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/default_exchange/consumer.py
+
+    Direct exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/direct_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/direct_exchange/consumer.py
+
+    Fanout exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/fanout_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/fanout_exchange/consumer.py
+
+    Topic exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/topic_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/topic_exchange/consumer.py
+
+################################################################################
 ```
 
 Si ves esta salida significa que el servicio se encuentra corriendo adecuadamente. Podés leer la información útil para tener un mejor entendimiento de la aplicación.
@@ -77,63 +103,56 @@ En esta sección vas a encontrar información que te va a servir para tener un m
 
 ### Funcionamiento de la aplicación
 
-El objetivo de la aplicación es leer eventos y comandos provenientes de una cola de RabbitMQ, procesarlos de manera asincrónica y guardar los datos en una base de datos, o bien ejecutar un comando en particular asociado a un handler. Al iniciar, el servicio carga la configuración leyendo las variables de entorno del archivo `env` y las configuraciones del archivo `_storage/settings.json`. En función de los settings inicializa el servicio y luego se queda esperando que lleguen datos por la cola.
-
-Cuando se recibe un nuevo dato, chequea si es un evento o un comando, comprueba la integridad de los datos, y en función del handler asociado a cada entidad realiza el procesamiento. Una vez que realiza el procesamiento, se queda esperando a que lleguen nuevos datos por la cola.
-
-Dada la naturaleza de las colas de mensajes, puede haber eventos y comandos que tarden demasiado en ejecutarse, o bien que el servicio falle en el procesamiento de los mismos, pero debido a que cada mensaje es confirmado luego que se realiza cada operación, los mensajes no confirmados serán mantenidos en la cola hasta que se puedan procesar adecuadamente. Esto le da una gran fiabilidad al sistema.
+En la carpeta samples se encuentran todos los ejemplos disponibles. Cada uno de los ejemplos de muestra dispone de un HELP accediendo al script con el flah `-h` o `--help` que te van a mostrar como debes invocarlo para correr adecuadamente.
 
 ### Configuración de la aplicación
 
-La configuración de toda la aplicación está alojada en el archivo `_storage/settings.json`. Podés cambiarla escribiendo en este archivo directamente. Si por casualidad llegás a borrar la configuración, podés copiar y modificar esta:
-
-```json
-{
-    "RABBITMQ_HOSTNAME": "rabbitmq",
-    "RABBITMQ_LOCAL_QUEUE_NAME": "local_iot_core",
-    "RABBITMQ_PREFETCH_COUNT": 1,
-    "EVENTS_TO_OMIT": ""
-}
-```
-
-Los parámetros de configuración significan lo siguiente:
-
-* **RABBITMQ_HOSTNAME**: Hostname para comunicarse con la cola de mansajes de RabbitMQ.
-* **RABBITMQ_LOCAL_QUEUE_NAME**: El nombre de la cola de mensajes a la que se conectará el servicio.
-* **RABBITMQ_PREFETCH_COUNT**: La cantidad máxima de mensajes encolados que puede tener el worker (útil cuando hay más de una instancia).
-* **EVENTS_TO_OMIT**: La lista de eventos que no se publicaran en caso que sucedan.
-
-Por razones del buen funcionamiento y seguridad de la aplicación, estas variables solo son configurables mediante el archivo `_storage/settings.json`.
-
-### Variables de entorno
-
-Si querés modificar algúna configuración como variable de entorno podés modificar el archivo `env`. Por lo general la configuración por defecto funciona sin necesidad que la modifiques.
-
-### Handlers de eventos y comandos
-
-Cuando llega un nuevo dato por la cola de mensajes, el servicio intentará analizar de qué tipo es, intentará obtener el handler correspondiente desde el mapping `_events_functions_mapping` del archivo `app.py` y realizará el procesamiento. A continuación están los detalles de cada uno de los handlers.
-
-### Binarios
-
-Puede haber ocasiones donde te sea útil ejecutar parte de la funcionalidad como un binario. Todas las utilidades binarias se encuentran en el directorio `bin`.
-
-El siguiente comando sirve para crear una base de datos con las entidades (Modelos) de SQLAlchemy que necesita este servicio para funcionar.
+La configuración para conectarse al broker AMQP está alojada en el archivo `env`. Podés cambiarla escribiendo en este archivo directamente. Si por casualidad llegás a borrar la configuración, podés copiar y modificar esta:
 
 ```
-docker-compose run worker-iot-core python bin/create_db.py
+RABBITMQ_HOSTNAME=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_USER=gotoiot
+RABBITMQ_PASS=gotoiot
+RABBITMQ_VHOST=/
 ```
 
-El siguiente comando sirve para borrar completamente la base de datos.
+Así mismo, todos los script de ejemplo están preparados para funcionar con valores por defecto que están definidos de la siguiente manera:
+
+```python
+rabbitmq_hostname = os.getenv("RABBITMQ_HOSTNAME", "rabbitmq")
+rabbitmq_port = int(os.getenv('RABBITMQ_PORT', 5672))
+rabbitmq_user = os.getenv("RABBITMQ_USER", "gotoiot")
+rabbitmq_pass = os.getenv("RABBITMQ_PASS", "gotoiot")
+rabbitmq_vhost = os.getenv("RABBITMQ_VHOST", "/")
+```
+
+### Realizar pruebas
+
+La mejor forma de probar los ejemplos es iniciar un consumidor de cualquier tipo de exchange en una terminal y en otra iniciar un productor del mismo tipo de exchange. Los mensajes enviados desde el productor deberían aparecer en el consumidor. Si bien es posible parametrizar cada uno de los scripts, con utilizar los valores por defecto se pueden realizar todas las pruebas necesarias.
+
+Para este ejemplo vamos a crear un consumidor del exchange `gotoiot.direct` utilizando la routing key `event.maintenance`. Abri una terminal y ejecuta el siguiente comando:
 
 ```
-docker-compose run worker-iot-core python bin/delete_db.py
+docker-compose run amqp-samples \
+python samples/direct_exchange/consumer.py gotoiot.direct event.maintenance
 ```
 
-### Pruebas
+Por otro lado, en otra terminal, vamos a lanzar un productor de datos hacia el exchange `gotoiot.direct` utilizando la routing key `event.maintenance` con el mensaje `'{"sensor_disconected":true}'`. Abri una terminal y ejecuta el siguiente comando:
 
-La mejor forma de probar el servicio es a través de un cliente de RabbitMQ que pueda enviar datos a la cola donde lee el servicio y evaluar cómo los procesa. En el directorio `test/exploration` tenés algunos archivos de python que sirven para probar las funcionalidades como enviar un evento, o bien datos inválidos y chequear cómo se comporta el servicio. 
+```
+docker-compose run amqp-samples \
+python samples/direct_exchange/producer.py gotoiot.direct event.maintenance '{"sensor_disconected":true}'
+```
 
-Así mismo, si querés podés entrar a la interfaz de RabbitMQ y poder analizar el estado de los Exchanges, Queues, Channels, y demás. Dentro de la interfaz de administración, en la solapa Queues tenés la posibilidad de enviar un mensaje. 
+Luego de enviar el mensaje, en la terminal del consumidor deberías ver un mensaje similar al siguiente:
+
+```
+Connecting to RabbitMQ: amqp://gotoiot:gotoiot@rabbitmq:5672
+Binding exchange 'gotoiot.direct' to queue 'amq.gen-jcY' with routing key 'event.maintenance'
+Starting to consume from 'amq.gen-jcYv3-wzHJmbsKhETSWtNA' with 'event.maintenance' routing_key...To exit press CTRL+C
+Received message: b'{"sensor_disconected":true}'
+```
 
 </details>
 
@@ -145,13 +164,12 @@ Así mismo, si querés podés entrar a la interfaz de RabbitMQ y poder analizar 
 * [Docker Compose](https://docs.docker.com/compose/) - Herramienta que permite administrar múltiples contenedores de Docker.
 * [Python](https://www.python.org/) - Lenguaje en el que están realizados los servicios.
 * [Pika](https://pypi.org/project/pika/) - Biblioteca de Python para interactuar con RabbitMQ.
-* [SQLAlchemy](https://pypi.org/project/SQLAlchemy/) - Biblioteca de Python por exelencia para interactuar con distintas bases de datos relacionales.
 
 </details>
 
 ## Contribuir 🖇️
 
-Si estás interesado en el proyecto y te gustaría sumar fuerzas para que siga creciendo y mejorando, podés abrir un hilo de discusión para charlar tus propuestas en [este link](https://github.com/gotoiot/service-worker-iot-core/issues/new). Así mismo podés leer el archivo [Contribuir.md](https://github.com/gotoiot/gotoiot-doc/wiki/Contribuir) de nuestra Wiki donde están bien explicados los pasos para que puedas enviarnos pull requests.
+Si estás interesado en el proyecto y te gustaría sumar fuerzas para que siga creciendo y mejorando, podés abrir un hilo de discusión para charlar tus propuestas en [este link](https://github.com/gotoiot/service-amqp-samples/issues/new). Así mismo podés leer el archivo [Contribuir.md](https://github.com/gotoiot/gotoiot-doc/wiki/Contribuir) de nuestra Wiki donde están bien explicados los pasos para que puedas enviarnos pull requests.
 
 ## Sobre Goto IoT 📖
 
@@ -178,7 +196,7 @@ Las colaboraciones principales fueron realizadas por:
 
 * **[Agustin Bassi](https://github.com/agustinBassi)**: Ideación, puesta en marcha y mantenimiento del proyecto.
 
-También podés mirar todas las personas que han participado en la [lista completa de contribuyentes](https://github.com/gotoiot/service-worker-iot-core/contributors).
+También podés mirar todas las personas que han participado en la [lista completa de contribuyentes](https://github.com/gotoiot/service-amqp-samples/contributors).
 
 ## Licencia 📄
 

@@ -5,6 +5,8 @@ services:
     build: .
     env_file:
       - env
+    networks: 
+      - rabbit
     # network_mode: host
     volumes:
-      - ./_service_storage:/app/_service_storage
+      - ./samples:/app/samples

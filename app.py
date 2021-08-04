@@ -15,8 +15,35 @@ def _show_welcome_message():
     \n"""
     print(welcome_message)
     print(f"\n{'#' * 80}\n")
-    # for setting in settings_list:
-    #     print(f"# {setting}")
+    help_message = """
+    In this repo there are many samples to connect to RabbitMQ broker.
+    Each sample includes help message invoking it with -h flag.
+
+    Default exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/default_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/default_exchange/consumer.py
+
+    Direct exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/direct_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/direct_exchange/consumer.py
+
+    Fanout exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/fanout_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/fanout_exchange/consumer.py
+
+    Topic exchange:
+        Producer: 
+            - docker-compose run amqp-samples python samples/topic_exchange/producer.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/topic_exchange/consumer.py
+    """
+    print(help_message)
     print(f"\n{'#' * 80}\n\n")
 
 
