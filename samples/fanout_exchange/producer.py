@@ -22,8 +22,9 @@ channel = connection.channel()
 # application settings
 exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.fanout"
 message = ' '.join(sys.argv[2:]) if len(sys.argv) > 2 else json.dumps({'type': 'USER_ALARM', 'user_name': 'gotoiot'})
+durable_flag = True if exchange_name == "amq.fanout" else False
 # send message to queue
-channel.exchange_declare(exchange=exchange_name, exchange_type='fanout')
+channel.exchange_declare(exchange=exchange_name, exchange_type='fanout', durable=durable_flag)
 channel.basic_publish(exchange=exchange_name, routing_key='', body=message)
 print(f"Sent to exchange='{exchange_name}', message='{message}'")
 connection.close()

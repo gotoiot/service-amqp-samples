@@ -23,8 +23,9 @@ channel = connection.channel()
 exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.direct"
 routing_key = sys.argv[2] if len(sys.argv) > 2 else "event"
 message = ' '.join(sys.argv[3:]) if len(sys.argv) > 3 else json.dumps({'type': 'USER_REGISTRATION', 'user_name': 'gotoiot'})
+durable_flag = True if exchange_name == "amq.direct" else False
 # send message to queue
-channel.exchange_declare(exchange=exchange_name, exchange_type='direct')
+channel.exchange_declare(exchange=exchange_name, exchange_type='direct', durable=durable_flag)
 channel.basic_publish(exchange=exchange_name, routing_key=routing_key, body=message)
 print(f"Sent to exchange='{exchange_name}', routing_key='{routing_key}', message='{message}'")
 connection.close()
