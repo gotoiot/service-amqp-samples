@@ -28,11 +28,11 @@ def main():
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     # application settings
-    queue_name = sys.argv[1] if len(sys.argv) > 0 else "test-default"
+    queue_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.default"
     # starting to consume from queue
     channel.queue_declare(queue=queue_name)
     channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
-    print(f'Starting to consume from queue {queue_name}. To exit press CTRL+C')
+    print(f"Starting to consume from queue '{queue_name}'. To exit press CTRL+C")
     channel.start_consuming()
 
 

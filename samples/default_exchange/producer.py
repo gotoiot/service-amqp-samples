@@ -19,11 +19,9 @@ parameters = pika.ConnectionParameters(rabbitmq_hostname, rabbitmq_port, rabbitm
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 # application settings
-# queue_name = "test-default"
-routing_key = sys.argv[1] if len(sys.argv) > 0 else "test-default"
-message = sys.argv[2] if len(sys.argv) > 1 else "Hello RabbitMQ!"
+routing_key = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.default"
+message = ' '.join(sys.argv[2:]) if len(sys.argv) > 2 else "Hello Goto IoT!"
 # send message to queue
-# channel.queue_declare(queue=queue_name)
 channel.basic_publish(exchange='', routing_key=routing_key, body=message)
 print(f"Sent to default exchange routing_key='{routing_key}', message='{message}'")
 connection.close()

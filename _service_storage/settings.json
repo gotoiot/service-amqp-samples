@@ -1,6 +1,0 @@
-{
-    "RABBITMQ_HOSTNAME": "rabbitmq",
-    "RABBITMQ_PORT": 5672,
-    "RABBITMQ_USER": "gotoiot",
-    "RABBITMQ_PASS": "gotoiot"
-}
