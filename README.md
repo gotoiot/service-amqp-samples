@@ -14,8 +14,6 @@ Este proyecto contiene distintos ejemplos para conectarse a un broker RabbitMQ -
 > Para que entiendas el alcance de este proyecto, es recomendable que leas la [Introducción a AMQP](https://www.gotoiot.com/pages/articles/amqp_intro/index.html) y la [Introducción a RabbitMQ](https://www.gotoiot.com/pages/articles/rabbitmq_intro/index.html) que se encuentran publicadas en nuestra web.
 
 
-> Si bien este proyecto está adaptado a funcionar con el proyecto Edge IoT Core, que involucra toda una serie de servicios de Goto IoT, es perfectamente adaptable a la comunicación con otros sistemas,lo que lo convierte en una pieza fundamental de trabajo y comunicación entre procesos de manera desacoplada.
-
 ## Instalar las dependencias 🔩
 
 Para correr este proyecto es necesario que instales `Docker` y `Docker Compose`. 
@@ -110,7 +108,7 @@ En la carpeta samples se encuentran todos los ejemplos disponibles. Cada uno de 
 La configuración para conectarse al broker AMQP está alojada en el archivo `env`. Podés cambiarla escribiendo en este archivo directamente. Si por casualidad llegás a borrar la configuración, podés copiar y modificar esta:
 
 ```
-RABBITMQ_HOSTNAME=rabbitmq
+RABBITMQ_HOSTNAME=localhost
 RABBITMQ_PORT=5672
 RABBITMQ_USER=gotoiot
 RABBITMQ_PASS=gotoiot
@@ -120,7 +118,7 @@ RABBITMQ_VHOST=/
 Así mismo, todos los script de ejemplo están preparados para funcionar con valores por defecto que están definidos de la siguiente manera:
 
 ```python
-rabbitmq_hostname = os.getenv("RABBITMQ_HOSTNAME", "rabbitmq")
+rabbitmq_hostname = os.getenv("RABBITMQ_HOSTNAME", "localhost")
 rabbitmq_port = int(os.getenv('RABBITMQ_PORT', 5672))
 rabbitmq_user = os.getenv("RABBITMQ_USER", "gotoiot")
 rabbitmq_pass = os.getenv("RABBITMQ_PASS", "gotoiot")
