@@ -1,4 +1,5 @@
-ENV=dev
-LOG_LEVEL=DEBUG
-LOCAL_SETTINGS_FILE=/app/_service_storage/settings.json
-# DATABASE_URL=sqlite:////app/_service_storage/db/db.sqlite
+RABBITMQ_HOSTNAME=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_USER=gotoiot
+RABBITMQ_PASS=gotoiot
+RABBITMQ_VHOST=/
