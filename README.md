@@ -88,6 +88,16 @@ Starting to run Service AMQP Samples
         Consumer:
             - docker-compose run amqp-samples python samples/topic_exchange/consumer.py
 
+    HTTP integration:
+        Entities declaration: 
+            - docker-compose run amqp-samples python samples/http_integration/create_exchange.py
+            - docker-compose run amqp-samples python samples/http_integration/create_queue.py
+            - docker-compose run amqp-samples python samples/http_integration/create_binding.py
+        Producer: 
+            - docker-compose run amqp-samples python samples/http_integration/send_message.py
+        Consumer:
+            - docker-compose run amqp-samples python samples/http_integration/get_messages.py
+
 ################################################################################
 ```
 
