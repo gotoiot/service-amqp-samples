@@ -3,7 +3,7 @@ import pika
 import sys
 
 # check if user request help
-if len(sys.argv) > 0 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
     print(f"Usage default exchange consumer: python consumer.py [routing_key]")
     sys.exit(0)
 

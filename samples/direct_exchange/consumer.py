@@ -6,7 +6,7 @@ import sys
 
 # check if user request help
 if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
-    print(f"Usage direct exchange consumer: python consumer.py [exchange_name] [routing_key]")
+    print(f"Usage direct exchange consumer: python consumer.py [exchange_name] [queue_name] [routing_key]")
     sys.exit(0)
 
 
@@ -31,10 +31,11 @@ def main():
     channel = connection.channel()
     # application settings
     exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.direct"
-    routing_key = sys.argv[2] if len(sys.argv) > 2 else "event"
+    queue_name = sys.argv[2] if len(sys.argv) > 2 else ""
+    routing_key = sys.argv[3] if len(sys.argv) > 3 else "event"
     # starting to consume from queue
     channel.exchange_declare(exchange=exchange_name, exchange_type='direct')
-    queue = channel.queue_declare(queue='', exclusive=True)
+    queue = channel.queue_declare(queue=queue_name, exclusive=False)
     queue_name = queue.method.queue
     channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_key)
     print(f"Binding exchange '{exchange_name}' to queue '{queue_name}' with routing key '{routing_key}'")

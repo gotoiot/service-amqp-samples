@@ -32,8 +32,9 @@ def main():
     # application settings
     exchange_name = sys.argv[1] if len(sys.argv) > 1 else "gotoiot.topic"
     routing_key = sys.argv[2] if len(sys.argv) > 2 else "event.#"
+    durable_flag = True if exchange_name == "amq.topic" else False
     # starting to consume from queue
-    channel.exchange_declare(exchange=exchange_name, exchange_type='topic')
+    channel.exchange_declare(exchange=exchange_name, exchange_type='topic', durable=durable_flag)
     queue = channel.queue_declare(queue='', exclusive=True)
     queue_name = queue.method.queue
     channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=routing_key)

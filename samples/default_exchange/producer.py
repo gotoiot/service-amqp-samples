@@ -3,7 +3,7 @@ import pika
 import sys
 
 # check if user request help
-if len(sys.argv) > 0 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
+if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
     print(f"Usage default exchange producer: python producer.py [routing_key] [message]")
     sys.exit(0)
 # connection settings

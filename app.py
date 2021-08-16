@@ -51,7 +51,7 @@ def _show_welcome_message():
         Producer: 
             - docker-compose run amqp-samples python samples/http_integration/send_message.py
         Consumer:
-            - docker-compose run amqp-samples python samples/http_integration/get_messages.py
+            - docker-compose run amqp-samples python samples/http_integration/receive_messages.py
     """
     print(help_message)
     print(f"\n{'#' * 80}\n\n")
