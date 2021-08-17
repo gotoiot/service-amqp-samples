@@ -97,6 +97,15 @@ Starting to run Service AMQP Samples
             - docker-compose run amqp-samples python samples/http_integration/send_message.py
         Consumer:
             - docker-compose run amqp-samples python samples/http_integration/get_messages.py
+    
+    Generic AMQP clients:
+        Producer: 
+            - docker-compose run amqp-samples python samples/generic_samples/producer.py -h
+        Consumer:
+            - docker-compose run amqp-samples python samples/generic_samples/consumer.py -h
+    
+
+################################################################################
 
 ################################################################################
 ```
