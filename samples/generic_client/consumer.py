@@ -178,7 +178,7 @@ def consume_queue(**kwargs):
 
 def main():
     cli_args = parse_cli_args()
-    print(cli_args)
+    # print(f"[DEBUG] CLI args: {cli_args}")
     connect_to_broker(**cli_args)
     declare_broker_entities(**cli_args)
     consume_queue(**cli_args)
@@ -188,12 +188,10 @@ if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
+        disconnect_from_broker()
+        print('[INFO] Exiting consumer by keyboard interrupt')
         try:
-            disconnect_from_broker()
             sys.exit(0)
         except SystemExit:
             os._exit(0)
-            disconnect_from_broker()
-        finally:
-            print('Exiting consumer')
 

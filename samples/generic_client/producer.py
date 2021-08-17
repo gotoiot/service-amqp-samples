@@ -15,6 +15,9 @@ DEFAULT_EXCHANGE_TYPE = os.getenv("EXCHANGE_TYPE", "")
 DEFAULT_DURABLE = os.getenv("DURABLE", True)
 DEFAULT_ROUTING_KEY = os.getenv("ROUTING_KEY", "")
 DEFAULT_BODY = os.getenv("BODY", "")
+# objects to establish connection to broker
+connection = None
+channel = None
 
 
 def parse_cli_args():
@@ -99,9 +102,17 @@ def parse_cli_args():
         # return the arguments obtained as dict
         return vars(args)
 
+
 def connect_to_broker(**kwargs):
+    global connection
+    global channel
     credentials = pika.PlainCredentials(kwargs['rabbitmq_user'], kwargs['rabbitmq_pass'])
-    parameters = pika.ConnectionParameters(kwargs['rabbitmq_hostname'], kwargs['rabbitmq_port'], kwargs['rabbitmq_vhost'], credentials)
+    parameters = pika.ConnectionParameters(
+        kwargs['rabbitmq_hostname'], 
+        kwargs['rabbitmq_port'], 
+        kwargs['rabbitmq_vhost'], 
+        credentials
+        )
     connection = pika.BlockingConnection(parameters)
     channel = connection.channel()
     print(f"[INFO] Connected to broker: "
@@ -110,13 +121,46 @@ def connect_to_broker(**kwargs):
     f"user={kwargs['rabbitmq_user']}, "
     f"pass={kwargs['rabbitmq_pass']}, "
     f"vhost={kwargs['rabbitmq_vhost']}")
-    return connection, channel
 
 
-cli_args = parse_cli_args()
-connection, channel = connect_to_broker(**cli_args)
-channel.exchange_declare(exchange=cli_args['exchange'], exchange_type=cli_args['exchange_type'], durable=cli_args['durable'])
-print(f"[INFO] Declared exchange: exchange='{cli_args['exchange']}', exchange_type='{cli_args['exchange_type']}', durable='{cli_args['durable']}'")
-channel.basic_publish(exchange=cli_args['exchange'], routing_key=cli_args['routing_key'], body=cli_args['body'])
-print(f"[INFO] Sent message: exchange='{cli_args['exchange']}', routing_key='{cli_args['routing_key']}', body='{cli_args['body']}'")
-connection.close()
+def declare_broker_entities(**kwargs):
+    channel.exchange_declare(
+        exchange=kwargs['exchange'], 
+        exchange_type=kwargs['exchange_type'], 
+        durable=kwargs['durable']
+        )
+    print(f"[INFO] Declared exchange: exchange='{kwargs['exchange']}', exchange_type='{kwargs['exchange_type']}', durable='{kwargs['durable']}'")
+
+
+def disconnect_from_broker():
+    connection.close()
+    print(f"[INFO] Closed connection to broker")
+
+
+def publish_message(**kwargs):
+    channel.basic_publish(
+        exchange=kwargs['exchange'], 
+        routing_key=kwargs['routing_key'], 
+        body=kwargs['body']
+        )
+    print(f"[INFO] Sent message: exchange='{kwargs['exchange']}', routing_key='{kwargs['routing_key']}', body='{kwargs['body']}'")
+
+
+def main():
+    cli_args = parse_cli_args()
+    # print(f"[DEBUG] CLI args: {cli_args}")
+    connect_to_broker(**cli_args)
+    declare_broker_entities(**cli_args)
+    publish_message(**cli_args)
+    disconnect_from_broker()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('[INFO] Exiting consumer by keyboard interrupt')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
