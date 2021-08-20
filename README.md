@@ -106,8 +106,6 @@ Starting to run Service AMQP Samples
     
 
 ################################################################################
-
-################################################################################
 ```
 
 Si ves esta salida significa que el servicio se encuentra corriendo adecuadamente. Podés leer la información útil para tener un mejor entendimiento de la aplicación.
@@ -169,6 +167,40 @@ Connecting to RabbitMQ: amqp://gotoiot:gotoiot@rabbitmq:5672
 Binding exchange 'gotoiot.direct' to queue 'amq.gen-jcY' with routing key 'event.maintenance'
 Starting to consume from 'amq.gen-jcYv3-wzHJmbsKhETSWtNA' with 'event.maintenance' routing_key...To exit press CTRL+C
 Received message: b'{"sensor_disconected":true}'
+```
+
+### Template de comandos
+
+Para facilitar el uso de los clientes, acá hay algunos comandos que te pueden ser de utilidad.
+
+Consumir de un host:
+
+```
+docker-compose run amqp-samples \
+python samples/generic_client/consumer.py \
+-H HOSTNAME \
+-p PORT \
+-u USER \
+-P PASS \
+-v VHOST \
+-e EXCHANGE \
+-t EXCHANGE_TYPE \
+-r ROUTING_KEY \
+-q QUEUE
+```
+
+Publicar en un exchange:
+```
+docker-compose run amqp-samples \
+python samples/generic_client/producer.py \
+-H HOSTNAME \
+-p PORT \
+-u USER \
+-P PASS \
+-v VHOST \
+-e EXCHANGE \
+-t EXCHANGE_TYPE \
+-m MESSAGE
 ```
 
 </details>

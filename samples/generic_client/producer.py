@@ -162,7 +162,7 @@ def publish_message(**kwargs):
 
 def main():
     cli_args = parse_cli_args()
-    print(f"[DEBUG] CLI args: {cli_args}")
+    # print(f"[DEBUG] CLI args: {cli_args}")
     connect_to_broker(**cli_args)
     declare_broker_entities(**cli_args)
     publish_message(**cli_args)

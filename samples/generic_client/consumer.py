@@ -152,6 +152,7 @@ def connect_to_broker(**kwargs):
 
 def _on_message_callback(ch, method, properties, body):
     print(f"[INFO] Received message: {body}")
+    # print(f"[INFO] Received message: ch={ch}, method={method}, properties={properties}, body={body}")
 
 
 def declare_broker_entities(**kwargs):
@@ -200,7 +201,7 @@ def consume_queue(**kwargs):
 
 def main():
     cli_args = parse_cli_args()
-    print(f"[DEBUG] CLI args: {cli_args}")
+    # print(f"[DEBUG] CLI args: {cli_args}")
     connect_to_broker(**cli_args)
     declare_broker_entities(**cli_args)
     consume_queue(**cli_args)
